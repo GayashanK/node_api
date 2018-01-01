@@ -1,12 +1,16 @@
 const express = require('express');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const users = require('./routes/users');
 
 const app = express();
-
-const users = require('./routes/users');
+mongoose.connect('mongodb://localhost/nodeapi');
+mongoose.Promise = global.Promise;
 
 // Middlewares
 app.use(morgan('dev'));
+app.use(bodyParser.json());
 
 // Routes
 app.use('/users', users);

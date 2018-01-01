@@ -5,6 +5,6 @@ const UserController = require('../controllers/users')
 
 router.route('/')
     .get(UserController.index)
-    .post();
+    .post(UserController.newUser);
 
 module.exports = router;

@@ -3,15 +3,13 @@ const morgan = require('morgan');
 
 const app = express();
 
+const users = require('./routes/users');
+
 // Middlewares
 app.use(morgan('dev'));
 
 // Routes
-app.use('/', (req, res, next) => {
-    res.status(200).json({
-        message: 'You get into index page'
-    })
-})
+app.use('/users', users);
 
 // Catch 404 Errors and forward them to error handlers
 app.use((req, res, next) => {

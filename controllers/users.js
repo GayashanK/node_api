@@ -10,7 +10,7 @@ module.exports = {
     },
 
     addUser: async (req, res, next) => {
-        const newUser = new User(req.body)
+        const newUser = new User(req.value.body)
         const user = await newUser.save()
         res.status(201).json(user)
     },
@@ -23,43 +23,36 @@ module.exports = {
 
     replaceUser: async (req, res, next) => {
         // Enforce that req.body must contain all the fields
-        const { userID } = req.params
-        const newUser = req.body
+        const { userID } = req.value.params
+        const newUser = req.value.body
         const result = await User.findByIdAndUpdate(userID, newUser)
         res.status(200).json({ success: "ture" })
     },
 
     updateUser: async (req, res, next) => {
         // req.body may contain all or any number of fields
-        const { userID } = req.params
-        const newUser = req.body
+        const { userID } = req.value.params
+        const newUser = req.value.body
         const result = await User.findByIdAndUpdate(userID, newUser)
         res.status(200).json({ success: "ture" })
     },
 
     getUserCars: async (req, res, next) => {
-        const { userID } = req.params
+        const { userID } = req.value.params
         const user = await User.findById(userID).populate('cars')
         console.log('user', user)
         res.status(200).json(user.cars)
     },
 
     addUserCar: async (req, res, next) => {
-        const { userID } = req.params
-        // Create a newCar
-        const newCar = new Car(req.body)
-        // Get user
+        const { userID } = req.value.params
         const user = await User.findById(userID)
-        console.log("user", user)
-        //Assign user as a car's seller
+        const newCar = new Car(req.value.body)
         newCar.seller = user
-        // Save the car
-        await newCar.save()
-        // Add car to user's selling array 'cars'
         user.cars.push(newCar)
-        // Save the user
+        await newCar.save()
         await user.save()
-        res.status(201).json(newCar)
+        res.status(201).json(user)
     }
 }
 
